@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/grey_light"
+    android:padding="24dp">
+
+    <!-- ===================================== -->
+    <!-- 🌟 REQUERIMIENTO 4.7 y 4.8: FLECHA DE NAVEGACIÓN SUPERIOR -->
+    <!-- ===================================== -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="start">
+
+        <TextView
+            android:id="@+id/btnFlechaAtras"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:text="&lt;"
+            android:textColor="@color/ucompensar_orange"
+            android:textSize="28sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:clickable="true"
+            android:focusable="true"
+            android:contentDescription="Regresar al menú principal" />
+
+    </LinearLayout>
+
+    <!-- ===================================== -->
+    <!-- TÍTULO (AZUL COMPENSAR) -->
+    <!-- ===================================== -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Validar número Par o Impar"
+        android:textColor="@color/ucompensar_blue"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="30dp"/>
+
+    <!-- CAMPO DE NÚMERO -->
+    <EditText
+        android:id="@+id/etNumero"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Ingrese un número"
+        android:textColorHint="@color/grey_dark"
+        android:textColor="@color/black"
+        android:backgroundTint="@color/ucompensar_blue"
+        android:inputType="numberSigned"/>
+
+    <!-- BOTÓN VALIDAR (NARANJA COMPENSAR) -->
+    <Button
+        android:id="@+id/btnValidar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="VALIDAR"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        android:backgroundTint="@color/ucompensar_orange"
+        android:layout_marginTop="20dp"/>
+
+    <!-- RESULTADO (AZUL COMPENSAR) -->
+    <TextView
+        android:id="@+id/tvResultado"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Resultado"
+        android:textColor="@color/ucompensar_blue"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:layout_marginTop="40dp"/>
+
+</LinearLayout>

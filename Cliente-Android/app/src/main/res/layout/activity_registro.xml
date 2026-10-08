@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/grey_light"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="30dp">
+
+        <!-- ===================================== -->
+        <!-- 🌟 FLECHA DE NAVEGACIÓN SUPERIOR (CORREGIDA Y VISIBLE) -->
+        <!-- ===================================== -->
+
+
+        <TextView
+            android:id="@+id/btnFlechaAtras"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="5dp"
+            android:text="&lt;"
+            android:textColor="@color/ucompensar_orange"
+            android:textSize="28sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:clickable="true"
+            android:focusable="true"
+            android:contentDescription="Regresar al Login" />
+
+
+        <!-- ===================================== -->
+        <!-- LOGO -->
+        <!-- ===================================== -->
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="20dp"
+            android:contentDescription="Logo UCompensar"
+            android:scaleType="fitCenter"
+            android:src="@drawable/logo_ucompensar" />
+
+        <!-- ===================================== -->
+        <!-- TÍTULO (AZUL COMPENSAR) -->
+        <!-- ===================================== -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="25dp"
+            android:gravity="center"
+            android:text="Registro de usuario"
+            android:textColor="@color/ucompensar_blue"
+            android:textSize="28sp"
+            android:textStyle="bold" />
+
+        <!-- ===================================== -->
+        <!-- NOMBRE -->
+        <!-- ===================================== -->
+        <EditText
+            android:id="@+id/etNombre"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Nombre"
+            android:textColorHint="@color/grey_dark"
+            android:textColor="@color/black"
+            android:backgroundTint="@color/ucompensar_blue"
+            android:inputType="textPersonName" />
+
+        <!-- ===================================== -->
+        <!-- APELLIDO -->
+        <!-- ===================================== -->
+        <EditText
+            android:id="@+id/etApellido"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:hint="Apellido"
+            android:textColorHint="@color/grey_dark"
+            android:textColor="@color/black"
+            android:backgroundTint="@color/ucompensar_blue"
+            android:inputType="textPersonName" />
+
+        <!-- ===================================== -->
+        <!-- CORREO -->
+        <!-- ===================================== -->
+        <EditText
+            android:id="@+id/etCorreoRegistro"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:hint="Correo electrónico"
+            android:textColorHint="@color/grey_dark"
+            android:textColor="@color/black"
+            android:backgroundTint="@color/ucompensar_blue"
+            android:inputType="textEmailAddress" />
+
+        <!-- ===================================== -->
+        <!-- CONTRASEÑA -->
+        <!-- ===================================== -->
+        <EditText
+            android:id="@+id/etPasswordRegistro"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:hint="Contraseña"
+            android:textColorHint="@color/grey_dark"
+            android:textColor="@color/black"
+            android:backgroundTint="@color/ucompensar_blue"
+            android:inputType="textPassword" />
+
+        <!-- ===================================== -->
+        <!-- FECHA DE NACIMIENTO (AZUL COMPENSAR) -->
+        <!-- ===================================== -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:text="Fecha de Nacimiento"
+            android:textColor="@color/ucompensar_blue"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="5dp"
+            android:gravity="center_vertical">
+
+            <Button
+                android:id="@+id/btnFechaNacimiento"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Seleccionar"
+                android:textColor="@color/white"
+                android:backgroundTint="@color/ucompensar_blue" />
+
+            <TextView
+                android:id="@+id/tvFechaSeleccionada"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:text="No seleccionada"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <!-- ===================================== -->
+        <!-- 🌟 EDAD CALCULADA EN TIEMPO REAL (NUEVA INTEGRACIÓN) -->
+        <!-- ===================================== -->
+        <TextView
+            android:id="@+id/tvEdadCalculada"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Edad: 0 años, 0 meses, 0 días"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:textStyle="italic" />
+
+
+
+        <!-- ===================================== -->
+        <!-- UNIVERSIDAD -->
+        <!-- ===================================== -->
+        <EditText
+            android:id="@+id/etUniversidad"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:hint="Universidad"
+            android:textColorHint="@color/grey_dark"
+            android:textColor="@color/black"
+            android:backgroundTint="@color/ucompensar_blue"
+            android:inputType="text" />
+
+        <!-- ===================================== -->
+        <!-- SEMESTRE (CON RECUADRO VISIBLE Y FONDO BLANCO) -->
+        <!-- ===================================== -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="8dp"
+            android:text="Semestre"
+            android:textColor="@color/ucompensar_blue"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <!-- 🌟 CONTENEDOR EN FORMA DE RECUADRO ELEGANTE -->
+
+
+        <!-- ===================================== -->
+        <!-- BOTÓN REGISTRAR (NARANJA COMPENSAR) -->
+        <!-- ===================================== -->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:orientation="horizontal"
+            android:background="@android:drawable/edit_text"
+            android:backgroundTint="@color/white"
+            android:gravity="center_vertical"
+            android:paddingStart="15dp"
+            android:paddingEnd="15dp"
+            android:layout_marginBottom="15dp">
+
+            <Spinner
+                android:id="@+id/spSemestre"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:backgroundTint="@color/ucompensar_blue"
+                android:spinnerMode="dropdown"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:theme="@android:style/Theme.Light" />
+        </LinearLayout>
+
+
+        <!-- ===================================== -->
+        <!-- MENSAJE -->
+        <!-- ===================================== -->
+
+        <Button
+            android:id="@+id/btnRegistrar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:layout_marginBottom="30dp"
+            android:backgroundTint="@color/ucompensar_orange"
+            android:padding="12dp"
+            android:text="REGISTRAR"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tvMensajeRegistro"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:gravity="center"
+            android:text=""
+            android:textColor="@color/ucompensar_orange"
+            android:textSize="17sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+</ScrollView>

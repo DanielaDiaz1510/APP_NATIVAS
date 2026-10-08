@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/grey_light"
+    android:padding="24dp">
+
+    <!-- ===================================== -->
+    <!-- REQUERIMIENTO 4.6: ÍCONO DE SALIDA EN LA ESQUINA SUPERIOR DERECHA -->
+    <!-- ===================================== -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@color/grey_light"
+        android:gravity="end">
+
+        <ImageView
+            android:id="@+id/btnCerrarSesion"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:padding="10dp"
+            android:src="@drawable/ic_logout"
+            android:clickable="true"
+            android:focusable="true"
+            android:contentDescription="Cerrar sesión" />
+
+    </LinearLayout>
+
+    <!-- ===================================== -->
+    <!-- REQUERIMIENTO 4.5: SALUDO DINÁMICO (se llena desde MainActivity) -->
+    <!-- ===================================== -->
+    <TextView
+        android:id="@+id/tvTituloPrincipal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textColor="@color/ucompensar_blue"
+        android:textSize="26sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="30dp" />
+
+    <!-- ===================================== -->
+    <!-- BOTÓN EJERCICIO PAR O IMPAR (NARANJA COMPENSAR) -->
+    <!-- ===================================== -->
+    <Button
+        android:id="@+id/btnParImpar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Ejercicio Par o Impar"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        android:backgroundTint="@color/ucompensar_orange"
+        android:padding="12dp" />
+
+</LinearLayout>
