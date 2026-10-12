@@ -45,9 +45,7 @@ class ParImparActivity : AppCompatActivity() {
             }
         }
 
-        // =====================================
         // VOLVER AL LOGIN x2
-        // =====================================
 
         val btnFlechaAtras = findViewById<TextView>(R.id.btnFlechaAtras)
         btnFlechaAtras.setOnClickListener {

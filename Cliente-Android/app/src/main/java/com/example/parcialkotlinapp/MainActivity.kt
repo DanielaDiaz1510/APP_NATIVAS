@@ -26,21 +26,20 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
-        // =====================================
-        // 🌟 REQUERIMIENTO 4.5: SALUDO PERSONALIZADO SEGÚN HORARIO
-        // =====================================
+        // Saludo personalizado
 
-        // Recibimos el nombre del usuario autenticado desde el Login (si no llega nada, usa "Usuario")
+
+        // Recibimos el nombre del usuario autenticado
         val nombreUsuario = intent.getStringExtra("nombreUsuario") ?: "Usuario"
 
         // Obtenemos la hora actual del dispositivo en formato de 24 horas
         val horaActual = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
 
-        // Lógica condicional estricta según la tabla del taller
+
         val saludo = when {
-            horaActual in 5..11 -> "Buenos días, $nombreUsuario"   // 05:00 - 11:59
-            horaActual in 12..17 -> "Buenas tardes, $nombreUsuario" // 12:00 - 17:59
-            else -> "Buenas noches, $nombreUsuario"                 // 18:00 - 04:59
+            horaActual in 5..11 -> "Buenos días, $nombreUsuario"
+            horaActual in 12..17 -> "Buenas tardes, $nombreUsuario"
+            else -> "Buenas noches, $nombreUsuario"
         }
 
         // Buscamos el título de la pantalla principal para cambiarle el texto dinámicamente
@@ -56,9 +55,8 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        // =====================================
-        // 🌟 REQUERIMIENTO 4.6: CIERRE DE SESIÓN SEGURO CON ALERTDIALOG CORPORATIVO
-        // =====================================
+        // AlertDialog para preguntarle al usuario si esta seguro de salir
+
         val btnCerrarSesion = findViewById<ImageView>(R.id.btnCerrarSesion)
 
         btnCerrarSesion.setOnClickListener {
@@ -74,7 +72,7 @@ class MainActivity : AppCompatActivity() {
                 finish()
             }
 
-            // Opción CANCELAR: Solo cierra el cuadro de diálogo y mantiene al usuario en la pantalla principal
+
             builder.setNegativeButton("CANCELAR") { dialog, _ ->
                 dialog.dismiss()
             }

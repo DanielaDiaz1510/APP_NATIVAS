@@ -7,9 +7,9 @@ using UsuariosApi.Services;
 var builder = WebApplication.CreateBuilder(args);
 
 // ========================================================
-// 🌟 CONFIGURACIÓN DE RED PARA EL PARCIAL
+//  CONFIGURACIÓN DE RED PARA EL PARCIAL
 // ========================================================
-// Le enseñamos a C# que abra la antena y escuche a tu celular Samsung por el puerto 62128
+// Conectar el celular al puerto
 builder.WebHost.ConfigureKestrel(options =>
 {
     options.ListenAnyIP(62128); 
@@ -17,7 +17,8 @@ builder.WebHost.ConfigureKestrel(options =>
 
 builder.Services.AddControllers();
 
-// Conexión a tu base de datos de MySQL Workbench
+// Conexión a la base de datos
+
 var connectionString = builder.Configuration.GetConnectionString("MySql");
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -35,12 +36,9 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// 🌟 LIBERADO: Swagger configurado para encenderse de forma directa en el taller
 app.UseSwagger();
 app.UseSwaggerUI();
 
-// Para la práctica local con el celular físico evitamos redireccionar HTTP hacia HTTPS
-// app.UseHttpsRedirection();
 
 app.MapControllers();
 

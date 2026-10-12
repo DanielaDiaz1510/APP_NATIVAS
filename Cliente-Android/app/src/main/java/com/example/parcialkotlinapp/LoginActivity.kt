@@ -102,11 +102,8 @@ class LoginActivity : AppCompatActivity() {
                             val usuario = response.body()
                             tvMensaje.text = "Bienvenido ${usuario?.nombre}"
 
-                            // 🌟 Ir al menú principal enviando el nombre real de cualquier usuario
                             val intent = Intent(this@LoginActivity, MainActivity::class.java)
 
-                            // Captura el nombre real de la base de datos (Ej: Carlos, Laura, Juan, Majo)
-                            // Si por algún error de red llega vacío, usa la palabra genérica "Usuario"
                             val nombreReal = usuario?.nombre ?: "Usuario"
                             intent.putExtra("nombreUsuario", usuario?.nombre)
 

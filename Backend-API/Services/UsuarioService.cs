@@ -6,6 +6,9 @@ namespace UsuariosApi.Services;
 
 public class UsuarioService : IUsuarioService
 {
+    // Edad máxima permitida para registrarse
+    private const int EdadMaxima = 80;
+
     private readonly IUsuarioRepository _repo;
 
     public UsuarioService(IUsuarioRepository repo)
@@ -38,7 +41,7 @@ public class UsuarioService : IUsuarioService
     }
 
     // ==========================================
-    // 🌟 CREAR USUARIO (CON CÁLCULO DE EDAD ESTRICTO SEGÚN PUNTO 4.1)
+    // CREAR USUARIO
     // ==========================================
     public async Task<UsuarioDto> CrearAsync(CrearUsuarioDto d)
     {
@@ -46,7 +49,7 @@ public class UsuarioService : IUsuarioService
             .Trim()
             .ToLowerInvariant();
 
-        // Validar que el correo no esté registrado (Punto 4.4)
+      
         if (await _repo.ObtenerPorCorreoAsync(correo) is not null)
         {
             throw new InvalidOperationException(
@@ -54,22 +57,14 @@ public class UsuarioService : IUsuarioService
             );
         }
 
-        // 🧠 LÓGICA DEL TALLER: Calcular Edad considerando Día, Mes y Año de forma estricta (Punto 4.1)
-        DateTime nacimiento = d.FechaNacimiento;
-        DateTime hoy = DateTime.Today;
-
-        int edadCalculada = hoy.Year - nacimiento.Year;
-
-        // Si la persona no ha llegado a su mes de cumpleaños, o si está en su mes pero no ha llegado al día, se le resta 1 año
-        if (hoy.Month < nacimiento.Month || (hoy.Month == nacimiento.Month && hoy.Day < nacimiento.Day))
-        {
-            edadCalculada--;
-        }
+        // Calcular edad  y validar el límite máximo
+        int edadCalculada = CalcularEdad(d.FechaNacimiento);
+        ValidarEdad(edadCalculada);
 
         // Convertir contraseña en HASH seguro con BCrypt (Punto 4.4)
         var passwordHash = BCrypt.Net.BCrypt.HashPassword(d.Password);
 
-        // Mapeo hacia la entidad (Se guarda el entero como String o Int según tu entidad, convirtiendo a string de forma limpia)
+        
         var usuario = new Usuario
         {
             Nombre = d.Nombre.Trim(),
@@ -77,7 +72,7 @@ public class UsuarioService : IUsuarioService
             Correo = correo,
             PasswordHash = passwordHash,
             FechaNacimiento = d.FechaNacimiento,
-            Edad = edadCalculada.ToString(),       // 🌟 CUMPLIMIENTO: Guarda únicamente el número entero de años calculados
+            Edad = edadCalculada.ToString(),       
             Universidad = d.Universidad.Trim(),
             Semestre = d.Semestre
         };
@@ -124,7 +119,7 @@ public class UsuarioService : IUsuarioService
     }
 
     // ==========================================
-    // ACTUALIZAR (Adaptado a la estructura del taller)
+    // ACTUALIZAR
     // ==========================================
     public async Task<bool> ActualizarAsync(int id, ActualizarUsuarioDto d)
     {
@@ -148,22 +143,15 @@ public class UsuarioService : IUsuarioService
             );
         }
 
-        // 🧠 LÓGICA DEL TALLER: Recalcular Edad considerando Día, Mes y Año estricto en caso de actualización
-        DateTime nacimiento = d.FechaNacimiento;
-        DateTime hoy = DateTime.Today;
-
-        int edadCalculada = hoy.Year - nacimiento.Year;
-
-        if (hoy.Month < nacimiento.Month || (hoy.Month == nacimiento.Month && hoy.Day < nacimiento.Day))
-        {
-            edadCalculada--;
-        }
+        // Recalcular edad y validar el límite máximo
+        int edadCalculada = CalcularEdad(d.FechaNacimiento);
+        ValidarEdad(edadCalculada);
 
         usuario.Nombre = d.Nombre.Trim();
         usuario.Apellido = d.Apellido.Trim();
         usuario.Correo = correo;
         usuario.FechaNacimiento = d.FechaNacimiento;
-        usuario.Edad = edadCalculada.ToString(); // 🌟 Guarda el entero de años recalculado
+        usuario.Edad = edadCalculada.ToString(); 
         usuario.Universidad = d.Universidad.Trim();
         usuario.Semestre = d.Semestre;
         usuario.Activo = d.Activo;
@@ -191,6 +179,42 @@ public class UsuarioService : IUsuarioService
     }
 
     // ==========================================
+    // VALIDACIÓN DE EDAD
+    // ==========================================
+    private static int CalcularEdad(DateTime nacimiento)
+    {
+        DateTime hoy = DateTime.Today;
+
+        int edad = hoy.Year - nacimiento.Year;
+
+        // Si aún no llegó su cumpleaños este año, se resta 1
+        if (hoy.Month < nacimiento.Month ||
+            (hoy.Month == nacimiento.Month && hoy.Day < nacimiento.Day))
+        {
+            edad--;
+        }
+
+        return edad;
+    }
+
+    private static void ValidarEdad(int edad)
+    {
+        if (edad < 0)
+        {
+            throw new InvalidOperationException(
+                "La fecha de nacimiento no puede ser futura."
+            );
+        }
+
+        if (edad > EdadMaxima)
+        {
+            throw new InvalidOperationException(
+                $"La edad no puede ser mayor a {EdadMaxima} años."
+            );
+        }
+    }
+
+    // ==========================================
     // MAPEO ENTITY -> DTO
     // ==========================================
     private static UsuarioDto Map(Usuario u)
@@ -201,7 +225,7 @@ public class UsuarioService : IUsuarioService
             Nombre = u.Nombre,
             Apellido = u.Apellido,
             Correo = u.Correo,
-            Edad = u.Edad,               // Transfiere limpiamente el número de años cumplidos
+            Edad = u.Edad,               
             Universidad = u.Universidad,
             Semestre = u.Semestre,       
             Activo = u.Activo,

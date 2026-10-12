@@ -32,7 +32,6 @@
             android:focusable="true"
             android:contentDescription="Regresar al Login" />
 
-
         <!-- ===================================== -->
         <!-- LOGO -->
         <!-- ===================================== -->
@@ -162,8 +161,6 @@
             android:textColor="@color/black"
             android:textSize="16sp"
             android:textStyle="italic" />
-
-
 
         <!-- ===================================== -->
         <!-- UNIVERSIDAD -->

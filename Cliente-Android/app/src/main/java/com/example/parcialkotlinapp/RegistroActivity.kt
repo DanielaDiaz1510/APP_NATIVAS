@@ -15,12 +15,17 @@ import java.util.*
 
 class RegistroActivity : AppCompatActivity() {
 
+    companion object {
+        // Edad máxima permitida para registrarse
+        private const val EDAD_MAXIMA = 80
+    }
+
     // Variable global para guardar la fecha en formato Date
     private var fechaSeleccionadaCalendar: Calendar? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_registro) // Asegura que apunte al XML que modificamos
+        setContentView(R.layout.activity_registro)
 
         // COMPONENTES DE TEXTO ESTÁNDAR
         val etNombre = findViewById<EditText>(R.id.etNombre)
@@ -39,7 +44,7 @@ class RegistroActivity : AppCompatActivity() {
         val btnRegistrar = findViewById<Button>(R.id.btnRegistrar)
         val tvMensaje = findViewById<TextView>(R.id.tvMensajeRegistro)
 
-        // 🌟 CONFIGURAR SPINNER DE SEMESTRES (Del 1 al 10)
+        // SPINNER DE SEMESTRES
         val semestres = arrayOf(
             "Seleccione un semestre",
             "Semestre 1", "Semestre 2", "Semestre 3", "Semestre 4", "Semestre 5",
@@ -50,7 +55,7 @@ class RegistroActivity : AppCompatActivity() {
         adaptador.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spSemestre.adapter = adaptador
 
-        // 🌟 LÓGICA DEL CALENDARIO FLOTANTE (DATE PICKER)
+        // DATE PICKER
         btnFechaNacimiento.setOnClickListener {
             val calendarActual = Calendar.getInstance()
             val anoActual = calendarActual.get(Calendar.YEAR)
@@ -67,9 +72,8 @@ class RegistroActivity : AppCompatActivity() {
                 val formatoVisual = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
                 tvFechaSeleccionada.text = formatoVisual.format(seleccionado.time)
 
-                // ========================================================
-                // 🧠 🌟 REQUERIMIENTO 4.1: CÁLCULO ESTRICTO DE EDAD EN VIVO
-                // ========================================================
+                //  Obtener datos del DatePicker
+
                 val hoy = Calendar.getInstance()
 
                 var anos = hoy.get(Calendar.YEAR) - anoSeleccionado
@@ -90,13 +94,19 @@ class RegistroActivity : AppCompatActivity() {
                     anos--
                 }
 
-                // Pintamos el desglose exacto de años, meses y días en tu etiqueta clara de Compensar
+                // Mostramos cuantos años,meses y dìas tiene el usuario
                 tvEdadCalculada.text = "Edad: $anos años, $meses meses, $dias días"
 
             }, anoActual, mesActual, diaActual)
 
             // No permitir fechas de nacimiento futuras
             datePickerDialog.datePicker.maxDate = System.currentTimeMillis()
+
+            // No permitir fechas que superen la edad máxima que es 80
+            val fechaMinima = Calendar.getInstance()
+            fechaMinima.add(Calendar.YEAR, -(EDAD_MAXIMA + 1))
+            fechaMinima.add(Calendar.DAY_OF_MONTH, 1)
+            datePickerDialog.datePicker.minDate = fechaMinima.timeInMillis
 
             datePickerDialog.show()
         }
@@ -135,7 +145,7 @@ class RegistroActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            // El backend exige mínimo 6 caracteres (CrearUsuarioDto.Password)
+            // Números minimos de caracteres para la contraseña es 6
             if (password.length < 6) {
                 etPasswordRegistro.error = "La contraseña debe tener al menos 6 caracteres"
                 return@setOnClickListener
@@ -144,6 +154,13 @@ class RegistroActivity : AppCompatActivity() {
             // Validar que se haya escogido una fecha de nacimiento
             if (fechaSeleccionadaCalendar == null) {
                 Toast.makeText(this, "Seleccione su fecha de nacimiento", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            // Validar que la edad no supere el máximo permitido
+            if (calcularEdadEnAnos(fechaSeleccionadaCalendar!!) > EDAD_MAXIMA) {
+                tvMensaje.text = "La edad no puede ser mayor a $EDAD_MAXIMA años."
+                Toast.makeText(this, "La edad no puede ser mayor a $EDAD_MAXIMA años", Toast.LENGTH_LONG).show()
                 return@setOnClickListener
             }
 
@@ -159,11 +176,11 @@ class RegistroActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            // 🌟 CONVERTIR FECHA AL FORMATO INTERNACIONAL ISO 8601 QUE PIDE LA API DE C#
-            val formatoIso8601 = SimpleDateFormat("yyyy-MM-dd'T'00:00:00", Locale.US)
-            val fechaNacimientoIso = formatoIso8601.format(fechaSeleccionadaCalendar!!.time)
+            // Preparar la fecha de nacimiento en el formato que entiende el servidor (año-mes-día)
+            val formatoFecha = SimpleDateFormat("yyyy-MM-dd'T'00:00:00", Locale.US)
+            val fechaNacimientoTexto = formatoFecha.format(fechaSeleccionadaCalendar!!.time)
 
-            // Capturar el semestre seleccionado (Posición 1 es Semestre 1, etc.)
+            // Capturar el semestre seleccionado
             val semestreSeleccionado = spSemestre.selectedItemPosition
 
 
@@ -172,7 +189,7 @@ class RegistroActivity : AppCompatActivity() {
                 apellido = apellido,
                 correo = correo,
                 password = password,
-                fechaNacimiento = fechaNacimientoIso,
+                fechaNacimiento = fechaNacimientoTexto,
                 universidad = universidad,
                 semestre = semestreSeleccionado
             )
@@ -186,7 +203,7 @@ class RegistroActivity : AppCompatActivity() {
 
                     override fun onResponse(call: Call<Usuario>, response: Response<Usuario>) {
                         if (response.isSuccessful) {
-                            // 🌟 REQUERIMIENTO 4.2: Cuadro emergente (AlertDialog) de Registro Exitoso
+                            // AlertDialog de Registro Exitoso
                             val builder = androidx.appcompat.app.AlertDialog.Builder(this@RegistroActivity)
                             builder.setTitle("Registro exitoso")
                             builder.setMessage("El usuario fue creado exitosamente.")
@@ -212,11 +229,7 @@ class RegistroActivity : AppCompatActivity() {
                             spSemestre.setSelection(0)
 
                         } else {
-                            // ========================================================
-                            // 🌟 REQUERIMIENTO 4.3: MANEJO DE ERRORES DEL BACKEND
-                            // Se muestra el mensaje REAL que devuelve la API
-                            // (ej. HTTP 400 {"mensaje": "Ya existe un usuario con ese correo."})
-                            // ========================================================
+
                             val cuerpoError = try {
                                 response.errorBody()?.string()
                             } catch (e: Exception) {
@@ -229,7 +242,7 @@ class RegistroActivity : AppCompatActivity() {
                             tvMensaje.text = mensajeError
                             Toast.makeText(this@RegistroActivity, mensajeError, Toast.LENGTH_LONG).show()
 
-                            // Si el error habla del correo (ej. ya registrado), marcarlo en el campo
+                            // Si el error es del correo le muestra en el campo tambien
                             if (mensajeError.contains("correo", ignoreCase = true)) {
                                 etCorreo.error = mensajeError
                                 etCorreo.requestFocus()
@@ -251,17 +264,15 @@ class RegistroActivity : AppCompatActivity() {
         }
     }
 
-    /**
-     * 🌟 REQUERIMIENTO 4.3
-     * Interpreta el cuerpo de error del backend:
-     *  - { "mensaje": "..." }                      -> error controlado (ej. correo duplicado, HTTP 400)
-     *  - { "errors": { "Campo": ["msg", ...] } }   -> validación automática de ASP.NET (400)
-     *  - { "title": "..." }                        -> otros ProblemDetails
-     *  - texto plano                               -> se muestra tal cual
-     *  - cualquier otra cosa                       -> mensaje genérico según el código HTTP
-     *
-     * Nunca se muestra "Error 500" cuando el backend devolvió una validación controlada.
-     */
+    private fun calcularEdadEnAnos(nacimiento: Calendar): Int {
+        val hoy = Calendar.getInstance()
+        var anos = hoy.get(Calendar.YEAR) - nacimiento.get(Calendar.YEAR)
+        if (hoy.get(Calendar.DAY_OF_YEAR) < nacimiento.get(Calendar.DAY_OF_YEAR)) {
+            anos--
+        }
+        return anos
+    }
+
     private fun extraerMensajeError(codigo: Int, cuerpo: String?): String {
         val mensajeGenerico = when (codigo) {
             400 -> "Los datos ingresados no son válidos. Revise la información e intente de nuevo."
@@ -277,7 +288,7 @@ class RegistroActivity : AppCompatActivity() {
         return try {
             val json = org.json.JSONObject(cuerpo)
 
-            // Buscar la clave "mensaje" (o "message") sin importar mayúsculas/minúsculas
+            // Buscar la clave mensaje o message sin importar mayúsculas/minúsculas
             val claveMensaje = json.keys().asSequence().firstOrNull {
                 it.equals("mensaje", ignoreCase = true) || it.equals("message", ignoreCase = true)
             }
@@ -304,7 +315,6 @@ class RegistroActivity : AppCompatActivity() {
                 else -> mensajeGenerico
             }
         } catch (e: Exception) {
-            // Si no es JSON pero es texto plano corto (no HTML), se muestra tal cual
             val texto = cuerpo.trim()
             if (!texto.startsWith("<") && texto.length <= 200) texto else mensajeGenerico
         }
